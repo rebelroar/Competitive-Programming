@@ -1,110 +1,197 @@
-// finding the minimum in the given range
+//  rebel_roar
+//
+//
+//                                    =====                =====
+//                                  ===    ====        ====    ===
+//                                 ==         ===    ===         ==
+//                                 ==            ====            ==
+//                                 ==            ====            ==
+//                                 ==          ==    ==          ==
+//                                 ==        ===      ===        ==
+//                                  ==  ======================  ==
+//                               ======    ===          ===    ======
+//                           ===    ==    ==              ==    ==    ===
+//                        ===        == ===      ====      === ==       ===
+//                       ==           ====     ========     ====          ==
+//                      ==            ===     ==========     ===           ==
+//                       ==           ====     ========     ====          ==
+//                        ===        == ===      ====      === ==       ===
+//                           ===    ==    ==              ==    ==    ===
+//                               ======    ===          ===    ======
+//                                  ==  ======================  ==
+//                                 ==        ===      ===        ==
+//                                 ==          ==    ==          ==
+//                                 ==            ====            ==
+//                                 ==            ====            ==
+//                                 ==         ===    ===         ==
+//                                  ===    ====        ====    ===
+//                                    =====                =====
 
 #include<bits/stdc++.h>
 using namespace std;
 
-int lazy[1000] = {0};
+#define gc getchar_unlocked
+#define fo(u,k,n) for(u=k;u<=n;u++)
+#define pb push_back
+#define mp make_pair
+#define ll long long
+#define ld long double
+#define endl '\n'
+#define ff first
+#define ss second
+#define sz(a) (ll)(a).size()
+#define Min(v) *min_element(all(v))
+#define Max(v) *max_element(all(v))
+#define all(x) x.begin(), x.end()
+#define allr(c) c.rbegin(),c.rend()
+#define mem0(x) memset(x, 0, sizeof(x))
+#define mem1(x) memset(x, -1, sizeof(x))
+#define PI 3.1415926535897932384626
+#define print(container) for (auto it : container) cout << it << " "; cout << endl;
+//===============================================================================================================
+typedef pair<ll, ll>              pll;
+typedef vector<ll>                vl;
+typedef vector<pll>               vpll;
+typedef vector<vl>                vvl;
+typedef map<ll, ll>               mll;
+typedef map<ll, bool>             mlb;
+typedef unordered_map<ll, ll>     umll;
+//===============================================================================================================
+void precision(ll a, ll k) {cout << fixed << setprecision(k) << a;}
+ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
+void google(ll t) {cout << "Case #" << t << ": ";}
+ll mod_mul(ll a, ll b) {a = a % (ll)(1e9 + 7); b = b % (ll)(1e9 + 7); return (((a * b) % (ll)(1e9 + 7)) + (ll)(1e9 + 7)) % (ll)(1e9 + 7);}
+ll mod_add(ll a, ll b) {a = a % (ll)(1e9 + 7); b = b % (ll)(1e9 + 7); return (((a + b) % (ll)(1e9 + 7)) + (ll)(1e9 + 7)) % (ll)(1e9 + 7);}
+ll pwr(ll a, ll b) {a %= (ll)(1e9 + 7); ll res = 1; while (b > 0) {if (b & 1) res = res * a % (ll)(1e9 + 7); a = a * a % (ll)(1e9 + 7); b >>= 1;} return res;}
+vector<ll> sieve(ll n) {ll *arr = new ll[n + 1](); vector<ll> vect; for (ll u = 2; u <= n; u++)if (arr[u] == 0) {vect.push_back(u); for (ll j = u * u; j <= n; j += u)arr[j] = 1;} return vect;}
+//=============================================DEBUG START=======================================================
+template <class T1, class T2> ostream &operator<<(ostream &os, const pair<T1, T2> &p) { return os << '{' << p.first << ", " << p.second << '}';}
+template < class T, class = decay_t<decltype(*begin(declval<T>()))>, class = enable_if_t < !is_same<T, string>::value >> ostream & operator<<(ostream &os, const T &c) {
+	os << '[';
+	for (auto it = c.begin(); it != c.end(); ++it) os << &", "[2 * (it == c.begin())] << *it;
+	return os << ']';
+}
+//support up to 5 args
+#define _NTH_ARG(_1, _2, _3, _4, _5, _6, N, ...) N
+#define _FE_0(_CALL, ...)
+#define _FE_1(_CALL, x) _CALL(x)
+#define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
+#define _FE_3(_CALL, x, ...) _CALL(x) _FE_2(_CALL, __VA_ARGS__)
+#define _FE_4(_CALL, x, ...) _CALL(x) _FE_3(_CALL, __VA_ARGS__)
+#define _FE_5(_CALL, x, ...) _CALL(x) _FE_4(_CALL, __VA_ARGS__)
+#define FOR_EACH_MACRO(MACRO, ...) _NTH_ARG(dummy, ##__VA_ARGS__, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0)(MACRO, ##__VA_ARGS__)
+//Change output format here
+#define out(x) #x " = " << x << "; "
+#define dbg(...) cerr << "Line " << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
 
-// In this method we are not gonna update all node of the given range we just update the root of that range
-// and increment the lazy value of their children nodes(here we are not gonna update the value of children nodes)
-// whenever we need any query of that particular range we just change the value of that range (i.e. increment by its lazy value)
-// so instead of O(N) tc it take O(log(n)) for update range
-void updateRangeLazy(vector<int> &tree, int ss, int se, int l, int r, int inc, int tree_ind) {
+#ifndef ONLINE_JUDGE
+#define cerr cout  // if you want to print to stdout, uncomment this
+#else
+#define dbg(...)
+#endif
+//===============================================DEBUG END=======================================================
+const ll mod = 1000000007ll;
+const ll inf = 1e18;
+//===============================================================================================================
+ll u = 0, k = 0, j = 0, m = 0, n = 0, l = 0, c = 0;
 
-	// before going down resolve the lazy value if exist
-	if (lazy[tree_ind] != 0) {
-		tree[tree_ind] += lazy[tree_ind];
-		// if it is not leaf node
-		if (ss != se) {
-			lazy[2 * tree_ind + 1] += lazy[tree_ind];
-			lazy[2 * tree_ind + 2] += lazy[tree_ind];
+const ll N = 100005;
+vector<ll> lazy(4 * N, 0);
+vector<ll> tree(4 * N, 0);
+
+void updateRangeLazy(ll ind, ll l, ll r, ll ql, ll qr, ll inc) {
+	if (lazy[ind] != 0) {
+		tree[ind] += (r - l + 1) * lazy[ind];
+		if (l != r) {
+			lazy[2 * ind + 1] += lazy[ind];
+			lazy[2 * ind + 2] += lazy[ind];
+
 		}
-		lazy[tree_ind] = 0; // clear the lazy value at cur index
+		lazy[ind] = 0;
 	}
+	if (l > r || r < ql || qr < l) return;
+	if (l >= ql && qr >= r) {
+		tree[ind] += (r - l + 1) * inc;
 
-	// No overlap
-	if (se < l || r < ss) return;
-
-	// Complete overlap
-	// here we update the root and lazy value of children of root and return
-	if (ss >= l && r >= se) {
-		tree[tree_ind] += inc;
-
-		if (ss != se) {
-			lazy[2 * tree_ind + 1] += inc;
-			lazy[2 * tree_ind + 2] += inc;
+		if (l != r) {
+			lazy[2 * ind + 1] += inc;
+			lazy[2 * ind + 2] += inc;
 		}
-		// Here we are returning, not going going for the children node
 		return;
 	}
-	int mid = (ss + se) >> 1;
-	updateRangeLazy(tree, ss, mid, l, r, inc, 2 * tree_ind + 1);
-	updateRangeLazy(tree, mid + 1, se, l, r, inc, 2 * tree_ind + 2);
-	// update the cur index like postorder traversal
+	ll mid = (l + r) >> 1;
+	updateRangeLazy(2 * ind + 1, l, mid, ql, qr, inc);
+	updateRangeLazy(2 * ind + 2, mid + 1, r, ql, qr, inc);
 
-	tree[tree_ind] = min(tree[2 * tree_ind + 1], tree[2 * tree_ind + 2]);
-	return;
+	tree[ind] = (tree[2 * ind + 1] + tree[2 * ind + 2]);
 }
 
-int query(vector<int> &tree, int ss, int se, int qs, int qe, int tree_ind) {
-
-	// first resolve lazy value at current node
-	if (lazy[tree_ind] != 0) {
-		tree[tree_ind] += lazy[tree_ind];
-		if (ss != se) {
-			lazy[2 * tree_ind + 1] += lazy[tree_ind];
-			lazy[2 * tree_ind + 2] += lazy[tree_ind];
+ll query(ll ind, ll l, ll r, ll ql, ll qr) {
+	if (lazy[ind] != 0) {
+		tree[ind] += (r - l + 1) * lazy[ind];
+		if (l != r) {
+			lazy[2 * ind + 1] += lazy[ind];
+			lazy[2 * ind + 2] += lazy[ind];
 
 		}
-		lazy[tree_ind] = 0;
+		lazy[ind] = 0;
 	}
-	// No overlap
-	if (ss > qe or se < qs) return INT_MAX;
+	if (l > qr or r < ql) return 0;
 
-	//complete overlap
-	if (ss >= qs && se <= qe) return tree[tree_ind];
+	if (l >= ql && r <= qr) return tree[ind];
 
-	// Partial overlap
-	int mid = (ss + se) >> 1;
-	int left = query(tree, ss, mid, qs, qe, 2 * tree_ind + 1);
-	int right = query(tree, mid + 1, se, qs, qe, 2 * tree_ind + 2);
-	return min(left, right);
+	ll mid = (l + r) >> 1;
+	ll left = query(2 * ind + 1, l, mid, ql, qr);
+	ll right = query(2 * ind + 2, mid + 1, r, ql, qr);
+	return (left + right);
 }
 
-void build_tree(vector<int> &tree, int tree_ind, int ss, int se, vector<int> a) {
-	if (ss == se) {
-		tree[tree_ind] = a[ss];
-		return;
+// void build_tree(vector<int> &tree, int tree_ind, int ss, int se, vector<int> a) {
+// 	if (ss == se) {
+// 		tree[tree_ind] = a[ss];
+// 		return;
+// 	}
+// 	int mid = (ss + se) >> 1;
+// 	build_tree(tree, 2 * tree_ind + 1, ss, mid, a);
+// 	build_tree(tree, 2 * tree_ind + 2, mid + 1, se, a);
+// 	tree[tree_ind] = min(tree[2 * tree_ind + 1], tree[2 * tree_ind + 2]);
+// 	return;
+// }
+
+void solve() {
+	ll n, q;
+	cin >> n >> q;
+	while (q--) {
+		ll type, l, r, val;
+		cin >> type;
+		if (type == 0) {
+			cin >> l >> r >> val;
+			updateRangeLazy(0, 0, n - 1, l - 1, r - 1, val);
+		}
+		else {
+			cin >> l >> r;
+			cout << query(0, 0, n - 1, l - 1, r - 1) << endl;
+		}
+		// fo(u, 0, 10)cout << tree[u] << " ";
+		// cout << endl;
+		// fo(u, 0, 10)cout << lazy[u] << " ";
+		// cout << endl;
 	}
-	int mid = (ss + se) >> 1;
-	build_tree(tree, 2 * tree_ind + 1, ss, mid, a);
-	build_tree(tree, 2 * tree_ind + 2, mid + 1, se, a);
-	tree[tree_ind] = min(tree[2 * tree_ind + 1], tree[2 * tree_ind + 2]);
-	return;
 }
 
 int main() {
-	vector<int> a{1, 3, 2, -5, 6, 4};
-	int n = a.size();
-	vector<int> tree(4 * n , 0);
+	ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
 
-	build_tree(tree, 0, 0, n - 1, a);
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
 
-	// Update elements from 0 to 2 by +10
-	updateRangeLazy(tree, 0, n - 1, 0, 2, +10, 0);
-	// [10, 13, 12, -5, 6, 4]
-
-	// Update elements from 2 to 2 by +5
-	updateRangeLazy(tree, 0, n - 1, 2, 2, +5, 0);
-	// [10, 13, 17, -5, 6, 4]
-
-	cout << "Query 0-3 " << query(tree, 0, n - 1, 0, 3, 0) << endl;
-
-	// Update elements from 3 to 4 by +10
-	updateRangeLazy(tree, 0, n - 1, 3, 4, +10, 0);
-	// [10, 13, 17, 5, 16, 4]
-
-	cout << "Query 3-5 " << query(tree, 0, n - 1, 3, 5, 0) << endl;
-
+	ll t = 1;
+	cin >> t;
+	while (t--) {
+		solve();
+	}
 	return 0;
 }
+
