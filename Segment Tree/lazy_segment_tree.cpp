@@ -146,15 +146,15 @@ ll query(ll ind, ll l, ll r, ll ql, ll qr) {
 	return (left + right);
 }
 
-// void build_tree(vector<int> &tree, int tree_ind, int ss, int se, vector<int> a) {
-// 	if (ss == se) {
-// 		tree[tree_ind] = a[ss];
+// void build_tree(ll ind, ll l, ll r) {
+// 	if (l == r) {
+// 		tree[ind] = a[l];
 // 		return;
 // 	}
 // 	int mid = (ss + se) >> 1;
-// 	build_tree(tree, 2 * tree_ind + 1, ss, mid, a);
-// 	build_tree(tree, 2 * tree_ind + 2, mid + 1, se, a);
-// 	tree[tree_ind] = min(tree[2 * tree_ind + 1], tree[2 * tree_ind + 2]);
+// 	build_tree(2 * ind + 1, l, mid);
+// 	build_tree(2 * ind + 2, mid + 1, r);
+// 	tree[ind] = min(tree[2 * ind + 1], tree[2 * ind + 2]);
 // 	return;
 // }
 
