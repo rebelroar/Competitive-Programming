@@ -1,0 +1,9 @@
+
+// Here m is the size of vector which you want to rotate and k is the number of times you want to rotate.
+
+void leftRotate(vl &a, ll m, ll k) {
+	k %= m;
+	reverse(a.begin(), a.begin() + k);
+	reverse(a.begin() + k, a.begin() + m);
+	reverse(a.begin(), a.begin() + m);
+}
