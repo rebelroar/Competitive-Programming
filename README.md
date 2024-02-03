@@ -1,1 +1,2 @@
-# Competitive-Programming Codes
+# CP Templates
+CP Templates 
